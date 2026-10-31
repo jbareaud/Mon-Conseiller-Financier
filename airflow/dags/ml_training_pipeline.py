@@ -211,13 +211,18 @@ with DAG(
         
         try:
             # 1. Connect
+            connected = False
             for i in range(10):
                 try:
                     ssh.connect(public_ip, username='ubuntu', pkey=ssh_key, timeout=10)
+                    connected = True
                     break
                 except Exception as e:
                     print(f"Waiting for SSH... ({e})")
                     time.sleep(10)
+
+            if not connected:
+                raise ConnectionError(f"❌ Impossible de joindre {public_ip}:22 après 10 tentatives. Vérifiez le Security Group AWS et le routage VPC.")
 
             # 2. Wait for MLflow installation to be usable
             print("⏳ Waiting for MLflow installation to be usable...")
@@ -269,6 +274,7 @@ with DAG(
                 echo "🚀 Starting MLflow Run..."
                 python3 -m mlflow run https://github.com/{GITHUB_REPO} \
                     --version {BRANCH_NAME} \
+                    --entry-point src/main.py \
                     --build-image
             """
             
