@@ -41,6 +41,9 @@ REPORT_TRAINING = os.getenv("REPORT_TRAINING", "mlflow")
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
 MLFLOW_EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT_NAME", "mon_conseiller_financier")
 
+# Docker
+DOCKER_IMAGE = "ialda/conseiller-financier-training-app:latest"
+
 # overrides
 NB_EPOCHS = os.getenv("NB_EPOCHS", 1)
 STEPS = os.getenv("STEPS", "train,score_perplexity,copy_s3")
@@ -268,14 +271,17 @@ with DAG(
                 export NB_EPOCHS={NB_EPOCHS}
                 export STEPS={STEPS}
                 
-                echo "🔍 VERIFYING MLFLOW INSTALLATION:"
-                which mlflow
+                #echo "🔍 VERIFYING MLFLOW INSTALLATION:"
+                #which mlflow
                 
-                echo "🚀 Starting MLflow Run..."
-                python3 -m mlflow run https://github.com/{GITHUB_REPO} \
-                    --version {BRANCH_NAME} \
-                    --entry-point src/main.py \
-                    --build-image
+                #echo "🚀 Starting MLflow Run..."
+                #python3 -m mlflow run https://github.com/{GITHUB_REPO} \
+                #    --version {BRANCH_NAME} \
+                #    --entry-point src/main.py \
+                #    --build-image
+                
+                docker pull {DOCKER_IMAGE} 
+                docker run --rm {DOCKER_IMAGE} -d
             """
             
             stdin, stdout, stderr = ssh.exec_command(cmd)

@@ -95,7 +95,7 @@ podman compose up airflow-init
 ### Lauching the app
 
 ```commandline
-podman compose up
+podman compose up -d
 ```
 
 Airflow if available at http://localhost:8080 with credentials airflow/airflow
