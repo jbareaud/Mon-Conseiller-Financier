@@ -1,13 +1,15 @@
 # Mon Conseiller Financier
 
-## Installation
+## Installing and running locally
+
+### Installation
 
 ```commandline
 uv venv --python 3.13.2
 source .venv/bin/activate
 uv pip install -r requirements.txt
 ```
-## Installation
+### Env. variables
 
 Set env variable `STEPS` to a comma-separated list of required steps to execute :
 - `dataset` : fetch dataset from HF
@@ -15,6 +17,8 @@ Set env variable `STEPS` to a comma-separated list of required steps to execute 
 - `score_perplexity` : score perplexity of trained model
 - `score_with_llm` : score trained model using LLM-as-judge
 - `copy_s3` : copy trained model to S3
+
+### Run
 
 Running the training script locally :
 ```commandline
@@ -25,6 +29,12 @@ Running tests :
 ```commandline
 uv run pytest
 ```
+
+## Industrialization
+
+See documentation for the full process :
+
+TODO
 
 ## Structure 
 
@@ -44,13 +54,6 @@ uv run pytest
   - **src/validation/perplexity.py** score model perplexity
   - **src/main.py** main entrypoint
 - **tests/** 
-
-## Configuration of the industrialization pipeline
-
-* [Airflow.md](doc/Airflow.md) : setting up and configuring the local Airflow instance
-* [Github_Action.md](doc/Github_Action.md) : env variables for Github Actions
-* [Training_script_overrides.md](doc/Training_script_overrides.md) : env variables overrides for the training script
-* [Misc.md](doc/Misc.md) : misc env variables
 
 ## Architecture
 
